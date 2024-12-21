@@ -10,6 +10,15 @@ plugin_path = os.path.join(os.path.dirname(__file__), "./bolt12-prism.py")
 plugin_opt = {"plugin": plugin_path}
 
 
+def experimental_offers_check(node_factory):
+    l1 = node_factory.get_node()
+    version = l1.rpc.getinfo()["version"]
+    if version.startswith("v24.0"):
+        return True
+    else:
+        return False
+
+
 # spin up a network
 def test_basic_test(node_factory):
     # Start five lightning nodes
@@ -45,9 +54,15 @@ def test_basic_test(node_factory):
 
 
 def test_general_prism(node_factory, bitcoind):
-    l1, l2, l3, l4, l5 = node_factory.get_nodes(
-        5, opts={"experimental-offers": None}
-    )
+    opts = [{},{},{},{},{}]
+    if experimental_offers_check(node_factory):
+        opts[0]["experimental-offers"] = None
+        opts[1]["experimental-offers"] = None
+        opts[2]["experimental-offers"] = None
+        opts[3]["experimental-offers"] = None
+        opts[4]["experimental-offers"] = None
+
+    l1, l2, l3, l4, l5 = node_factory.get_nodes(5, opts)
     nodes = [l1, l2, l3, l4, l5]
 
     # fund nodes, create channels, l2 is the prism
@@ -143,9 +158,14 @@ def test_general_prism(node_factory, bitcoind):
 
 
 def test_splits(node_factory, bitcoind):
-    l1, l2, l3, l4 = node_factory.get_nodes(
-        4, opts={"experimental-offers": None}
-    )
+    opts = [{},{},{},{}]
+    if experimental_offers_check(node_factory):
+        opts[0]["experimental-offers"] = None
+        opts[1]["experimental-offers"] = None
+        opts[2]["experimental-offers"] = None
+        opts[3]["experimental-offers"] = None
+
+    l1, l2, l3, l4 = node_factory.get_nodes(4, opts)
     nodes = [l1, l2, l3, l4]
 
     # fund nodes, create channels, l1 is the prism
@@ -209,9 +229,15 @@ def test_splits(node_factory, bitcoind):
 
 
 def test_payment_threshold(node_factory, bitcoind):
-    l1, l2, l3, l4, l5 = node_factory.get_nodes(
-        5, opts={"experimental-offers": None}
-    )
+    opts = [{},{},{},{},{}]
+    if experimental_offers_check(node_factory):
+        opts[0]["experimental-offers"] = None
+        opts[1]["experimental-offers"] = None
+        opts[2]["experimental-offers"] = None
+        opts[3]["experimental-offers"] = None
+        opts[4]["experimental-offers"] = None
+
+    l1, l2, l3, l4, l5 = node_factory.get_nodes(5, opts)
     nodes = [l1, l2, l3, l4, l5]
 
     # fund nodes, create channels, l2 is the prism
@@ -295,9 +321,15 @@ def test_payment_threshold(node_factory, bitcoind):
     )
 
 def test_update_outlay(node_factory, bitcoind):
-    l1, l2, l3, l4, l5 = node_factory.get_nodes(
-        5, opts={"experimental-offers": None}
-    )
+    opts = [{},{},{},{},{}]
+    if experimental_offers_check(node_factory):
+        opts[0]["experimental-offers"] = None
+        opts[1]["experimental-offers"] = None
+        opts[2]["experimental-offers"] = None
+        opts[3]["experimental-offers"] = None
+        opts[4]["experimental-offers"] = None
+
+    l1, l2, l3, l4, l5 = node_factory.get_nodes(5, opts)
     nodes = [l1, l2, l3, l4, l5]
 
     # fund nodes, create channels, l2 is the prism
